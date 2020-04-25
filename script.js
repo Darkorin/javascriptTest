@@ -33,23 +33,14 @@ const page = {
         ["1. JavaScript", "2. terminal/bash", "3. for loops", "4. console.log"],
         ["Submit"]
     ],
-    btnId: [
-        ["start"],
-        ["Q1A1", "Q1A2", "Q1A3", "Q1A4"],
-        ["Q2A1", "Q2A2", "Q2A3", "Q2A4"],
-        ["Q3A1", "Q3A2", "Q3A3", "Q3A4"],
-        ["Q4A1", "Q4A2", "Q4A3", "Q4A4"],
-        ["Q5A1", "Q5A2", "Q5A3", "Q5A4"],
-        ["submit"]
-    ],
     btnResponse: [
-        [""],
+        ["start"],
         ["Wrong!", "Wrong!", "Correct!", "Wrong!"],
         ["Correct!", "Wrong!", "Wrong!", "Wrong!"],
         ["Wrong!", "Wrong!", "Wrong!", "Correct!"],
         ["Wrong!", "Correct!", "Wrong!", "Wrong!"],
         ["Wrong!", "Wrong!", "Wrong!", "Correct!"],
-        [""]
+        ["submit"]
     ],
 }
 
@@ -84,10 +75,9 @@ const init = function () {
 }
 const clickHandler = function (e) {
     e.preventDefault();
-    let btnId = e.target.id;
     let response = e.target.dataset.response;
     let isAnswer = response === "Correct!" || response === "Wrong!";
-    if (btnId === "start") {
+    if (response === "start") {
         startQuiz();
     }
     if (response === "Wrong!") {
@@ -98,15 +88,15 @@ const clickHandler = function (e) {
         transitionTimer(response);
         nextPage();
     }
-    if (btnId === "submit") {
+    if (response === "submit") {
         submitScore();
         renderHighScores();
     }
-    if (btnId === "back") {
+    if (response === "back") {
         init();
         render();
     }
-    if (btnId === "clear") {
+    if (response === "clear") {
         highScores = { names: [], scores: [] };
         localStorage.setItem("highscores", JSON.stringify(highScores));
         renderHighScores();
@@ -192,7 +182,6 @@ const render = function () {
         newBtn.textContent = page.btnText[pageNumber][i];
         newBtn.setAttribute("type", "button");
         newBtn.setAttribute("class", "btn btn-success my-1 py-1");
-        newBtn.setAttribute("id", page.btnId[pageNumber][i]);
         newBtn.setAttribute("data-response", page.btnResponse[pageNumber][i]);
         btnForm.append(newBtn);
         btnForm.append(document.createElement("br"));
@@ -248,12 +237,12 @@ const renderHighScores = function () {
     let clearBtn = document.createElement("button");
 
     backBtn.textContent = "Go Back";
-    backBtn.setAttribute("id", "back");
+    backBtn.setAttribute("data-response", "back");
     backBtn.setAttribute("type", "button");
     backBtn.setAttribute("class", "btn btn-success m-1 p-1");
 
     clearBtn.textContent = "Clear Highscores";
-    clearBtn.setAttribute("id", "clear");
+    clearBtn.setAttribute("data-response", "clear");
     clearBtn.setAttribute("type", "button");
     clearBtn.setAttribute("class", "btn btn-success m-1 p-1");
 
