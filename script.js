@@ -7,6 +7,7 @@ const alertDiv = document.querySelector("#alert-div");
 const responseDiv = document.querySelector("#response-div");
 const navbar = document.querySelector(".navbar");
 
+
 const page = [
     {
         mainText: "Coding Quiz Challenge",
@@ -84,8 +85,9 @@ const init = function () {
 const clickHandler = function (e) {
     e.preventDefault();
     let response = e.target.dataset.response;
+    console.log(response);
     let btnText = e.target.textContent;
-    let isAnswer = response === btnText || (response != "start" && response != "submit" && response != "back" && response != "clear" && response != "");
+    let isAnswer = response === btnText || (response != "start" && response != "submit" && response != "back" && response != "clear" && response != "" && response != undefined);
     let answeredRight = false;
     if (isAnswer && response === btnText) {
         answeredRight = true;
