@@ -91,7 +91,7 @@ const clickHandler = function (e) {
         startQuiz();
     }
     if (response === "Wrong!") {
-        seconds -= 15;
+        seconds -= 10;
         renderTime();
     }
     if (isAnswer) {
