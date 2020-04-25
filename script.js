@@ -17,7 +17,7 @@ const page = {
         "A very useful tool used during development and debugging for printing content to the debugger is:",
         "All done!"],
     subText: [
-        "Try to answer the following code-related questions within the time limit. Keep in mind that incorrect answers will penalize your score/time by ten seconds!",
+        "Try to answer the following code-related questions within the time limit. Keep in mind that incorrect answers will penalize your score/time by fifteen seconds!",
         "",
         "",
         "",
@@ -91,7 +91,7 @@ const clickHandler = function (e) {
         startQuiz();
     }
     if (response === "Wrong!") {
-        seconds -= 10;
+        seconds -= 15;
         renderTime();
     }
     if (isAnswer) {

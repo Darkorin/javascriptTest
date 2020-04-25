@@ -22,7 +22,7 @@ will remain visible for 1.5s showing you correct or
 incorrect before disappearing again.
 
 The timer starts at 75 seconds and counts down. If a 
-player selects an incorrect answer the player loses 10
+player selects an incorrect answer the player loses 15
 seconds off of their timer. Once the player has answered all
 of their questions a results screen will pop up and show 
 their remaining time as a score with an input box to 
