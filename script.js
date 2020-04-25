@@ -18,32 +18,32 @@ const page = [
     {
         mainText: "Commonly used data types DO NOT include:",
         subText: "",
-        btnText: ["1. strings", "2. booleans", "3. alerts", "4. numbers"],
-        btnResponse: "3. alerts"
+        btnText: ["strings", "booleans", "alerts", "numbers"],
+        btnResponse: "alerts"
     },
     {
         mainText: "The condition in an if/else statement is enclosed within ______.",
         subText: "",
-        btnText: ["1. paratheses", "2. curly brackets", "3. quotes", "4. square brackets"],
-        btnResponse: "1. paratheses"
+        btnText: ["paratheses", "curly brackets", "quotes", "square brackets"],
+        btnResponse: "paratheses"
     },
     {
         mainText: "Arrays in JavaScript can be used to store ______.",
         subText: "",
-        btnText: ["1. numbers and strings", "2. other arrays", "3. booleans", "4. all of the above"],
-        btnResponse: "4. all of the above"
+        btnText: ["numbers and strings", "other arrays", "booleans", "all of the above"],
+        btnResponse: "all of the above"
     },
     {
         mainText: "String values must be enclosed within ______ when being assigned to variables.",
         subText: "",
-        btnText: ["1. commas", "2. quotes", "3. curly brackets", "paratheses"],
-        btnResponse: "2. quotes"
+        btnText: ["commas", "quotes", "curly brackets", "paratheses"],
+        btnResponse: "quotes"
     },
     {
         mainText: "A very useful tool used during development and debugging for printing content to the debugger is:",
         subText: "",
-        btnText: ["1. JavaScript", "2. terminal/bash", "3. for loops", "4. console.log"],
-        btnResponse: "4. console.log"
+        btnText: ["JavaScript", "terminal/bash", "for loops", "console.log"],
+        btnResponse: "console.log"
     },
     {
         mainText: "All done!",
@@ -85,38 +85,30 @@ const init = function () {
 const clickHandler = function (e) {
     e.preventDefault();
     let response = e.target.dataset.response;
-    console.log(response);
-    let btnText = e.target.textContent;
-    let isAnswer = response === btnText || (response != "start" && response != "submit" && response != "back" && response != "clear" && response != "" && response != undefined);
-    let answeredRight = false;
-    if (isAnswer && response === btnText) {
-        answeredRight = true;
+    let btnText = e.target.dataset.selected;
+    if (response === undefined) {
+        return;
     }
     if (response === "start") {
         startQuiz();
-    }
-    if (response != btnText && isAnswer) {
-        seconds -= 15;
-        renderTime();
-    }
-    if (isAnswer) {
-        transitionTimer(answeredRight);
-        nextPage();
-    }
-    if (response === "submit") {
+    } else if (response === "submit") {
         submitScore();
         renderHighScores();
-    }
-    if (response === "back") {
+    } else if (response === "back") {
         init();
         render();
-    }
-    if (response === "clear") {
+    } else if (response === "clear") {
         highScores = { names: [], scores: [] };
         localStorage.setItem("highscores", JSON.stringify(highScores));
         renderHighScores();
+    } else {
+        if (response != btnText) {
+            seconds -= 15;
+            renderTime();
+        }
+        transitionTimer(response === btnText);
+        nextPage();
     }
-
 }
 
 const startQuiz = function () {
@@ -198,9 +190,14 @@ const render = function () {
     }
     for (let i = 0; i < page[pageNumber].btnText.length; i++) {
         let newBtn = document.createElement("button");
-        newBtn.textContent = page[pageNumber].btnText[i];
+        if (page[pageNumber].btnText.length > 1) {
+            newBtn.textContent = `${i + 1}. ${page[pageNumber].btnText[i]}`;
+        } else {
+            newBtn.textContent = page[pageNumber].btnText[i];
+        }
         newBtn.setAttribute("type", "button");
         newBtn.setAttribute("class", "btn btn-success my-1 py-1");
+        newBtn.setAttribute("data-selected", page[pageNumber].btnText[i]);
         newBtn.setAttribute("data-response", page[pageNumber].btnResponse);
         btnForm.append(newBtn);
         btnForm.append(document.createElement("br"));
