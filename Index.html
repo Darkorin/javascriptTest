@@ -11,6 +11,15 @@
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
     <title>Javascript Quiz</title>
+    
+    <!-- I put this in because the blue box around the button was annoying me but it's bad accessibility practice to remove it 
+         without replacing it with something so I changed the text color on focus -->
+    <style>
+        #highscore-button:focus {
+            outline: 0;
+            color: green;
+        }
+    </style>
 </head>
 
 <body>
@@ -18,12 +27,12 @@
         <div class="row">
             <div class="col">
                 <nav class="navbar navbar-light">
-                    <div class="navbar-brand" id="highscore-div">View Highscores</div>
+                    <button class="navbar-brand" id="highscore-button" style="background:none;border:none;">View Highscores</button>
                     <div id="navbarText">
                         
-                        <span class="navbar-text text-dark">
+                        <div class="navbar-text text-dark">
                             Time: <span id="timer"></span>
-                        </span>
+                        </div>
                         
                     </div>
                 </nav>

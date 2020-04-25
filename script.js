@@ -1,4 +1,4 @@
-const hishscoreDiv = document.querySelector("#highscore-div");
+const highscoreBtn = document.querySelector("#highscore-button");
 const timerSpan = document.querySelector("#timer");
 const mainText = document.querySelector("#main-text");
 const subText = document.querySelector("#sub-text");
@@ -254,5 +254,5 @@ const renderHighScores = function () {
 }
 
 init();
-hishscoreDiv.addEventListener("click", renderHighScores);
+highscoreBtn.addEventListener("click", renderHighScores);
 btnForm.addEventListener("click", clickHandler);
