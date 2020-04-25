@@ -213,6 +213,12 @@ const renderResults = function () {
     newInput.setAttribute("name", "initials");
     newInput.setAttribute("class", "mx-1")
 
+    newInput.addEventListener("keydown", function(e) {
+        if (e.key === "Enter") {
+            e.preventDefault();
+        }
+    });
+
     btnForm.prepend(newInput);
     btnForm.prepend(newLabel);
 }
