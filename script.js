@@ -76,11 +76,11 @@ const init = function () {
 const clickHandler = function (e) {
     e.preventDefault();
     let response = e.target.dataset.response;
-    let isAnswer = response.matches("Correct!") || response.matches("Wrong!");
-    if (response.matches("start")) {
+    let isAnswer = response === "Correct!" || response === "Wrong!";
+    if (response === "start") {
         startQuiz();
     }
-    if (response.matches("Wrong!")) {
+    if (response === "Wrong!") {
         seconds -= 15;
         renderTime();
     }
@@ -88,15 +88,15 @@ const clickHandler = function (e) {
         transitionTimer(response);
         nextPage();
     }
-    if (response.matches("submit")) {
+    if (response === "submit") {
         submitScore();
         renderHighScores();
     }
-    if (response.matches("back")) {
+    if (response === "back") {
         init();
         render();
     }
-    if (response.matches("clear")) {
+    if (response === "clear") {
         highScores = { names: [], scores: [] };
         localStorage.setItem("highscores", JSON.stringify(highScores));
         renderHighScores();
