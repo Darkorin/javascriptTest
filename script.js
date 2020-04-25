@@ -5,6 +5,7 @@ const subText = document.querySelector("#sub-text");
 const btnForm = document.querySelector("#button-form");
 const alertDiv = document.querySelector("#alert-div");
 const responseDiv = document.querySelector("#response-div");
+const navbar = document.querySelector(".navbar");
 
 const page = {
     mainText: [
@@ -72,6 +73,7 @@ const init = function () {
     subText.removeAttribute("style");
     btnForm.removeAttribute("class");
     btnForm.removeAttribute("style");
+    navbar.removeAttribute("style");
     mainText.setAttribute("class", "text-center");
     mainText.setAttribute("style", "font-size: 40px; font-weight: bold;");
     subText.setAttribute("class", "text-center");
@@ -231,6 +233,8 @@ const renderHighScores = function () {
     mainText.textContent = "Highscores";
     mainText.setAttribute("style", "font-size: 30px; font-weight: bold; margin-left: 20px;");
     subText.textContent = "";
+
+    navbar.setAttribute("style", "visibility: hidden");
 
     for (let i = 0; i < highScores.scores.length; i++) {
         let newScore = document.createElement("div");
