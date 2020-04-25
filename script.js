@@ -7,42 +7,50 @@ const alertDiv = document.querySelector("#alert-div");
 const responseDiv = document.querySelector("#response-div");
 const navbar = document.querySelector(".navbar");
 
-const page = {
-    mainText: [
-        "Coding Quiz Challenge",
-        "Commonly used data types DO NOT include:",
-        "The condition in an if/else statement is enclosed within ______.",
-        "Arrays in JavaScript can be used to store ______.",
-        "String values must be enclosed within ______ when being assigned to variables.",
-        "A very useful tool used during development and debugging for printing content to the debugger is:",
-        "All done!"],
-    subText: [
-        "Try to answer the following code-related questions within the time limit. Keep in mind that incorrect answers will penalize your score/time by fifteen seconds!",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "Your final score is "],
-    btnText: [
-        ["Start Quiz"],
-        ["1. strings", "2. booleans", "3. alerts", "4. numbers"],
-        ["1. paratheses", "2. curly brackets", "3. quotes", "4. square brackets"],
-        ["1. numbers and strings", "2. other arrays", "3. booleans", "4. all of the above"],
-        ["1. commas", "2. quotes", "3. curly brackets", "paratheses"],
-        ["1. JavaScript", "2. terminal/bash", "3. for loops", "4. console.log"],
-        ["Submit"]
-    ],
-    btnResponse: [
-        ["start"],
-        ["Wrong!", "Wrong!", "Correct!", "Wrong!"],
-        ["Correct!", "Wrong!", "Wrong!", "Wrong!"],
-        ["Wrong!", "Wrong!", "Wrong!", "Correct!"],
-        ["Wrong!", "Correct!", "Wrong!", "Wrong!"],
-        ["Wrong!", "Wrong!", "Wrong!", "Correct!"],
-        ["submit"]
-    ],
-}
+const page = [
+    {
+        mainText: "Coding Quiz Challenge",
+        subText: "Try to answer the following code-related questions within the time limit. Keep in mind that incorrect answers will penalize your score/time by fifteen seconds!",
+        btnText: ["Start Quiz"],
+        btnResponse: "start"
+    },
+    {
+        mainText: "Commonly used data types DO NOT include:",
+        subText: "",
+        btnText: ["1. strings", "2. booleans", "3. alerts", "4. numbers"],
+        btnResponse: "3. alerts"
+    },
+    {
+        mainText: "The condition in an if/else statement is enclosed within ______.",
+        subText: "",
+        btnText: ["1. paratheses", "2. curly brackets", "3. quotes", "4. square brackets"],
+        btnResponse: "1. paratheses"
+    },
+    {
+        mainText: "Arrays in JavaScript can be used to store ______.",
+        subText: "",
+        btnText: ["1. numbers and strings", "2. other arrays", "3. booleans", "4. all of the above"],
+        btnResponse: "4. all of the above"
+    },
+    {
+        mainText: "String values must be enclosed within ______ when being assigned to variables.",
+        subText: "",
+        btnText: ["1. commas", "2. quotes", "3. curly brackets", "paratheses"],
+        btnResponse: "2. quotes"
+    },
+    {
+        mainText: "A very useful tool used during development and debugging for printing content to the debugger is:",
+        subText: "",
+        btnText: ["1. JavaScript", "2. terminal/bash", "3. for loops", "4. console.log"],
+        btnResponse: "4. console.log"
+    },
+    {
+        mainText: "All done!",
+        subText: "Your final score is ",
+        btnText: ["Submit"],
+        btnResponse: "submit"
+    }
+]
 
 let highScores = { names: [], scores: [] };
 let storedHighScores = JSON.parse(localStorage.getItem("highscores"));
@@ -76,16 +84,21 @@ const init = function () {
 const clickHandler = function (e) {
     e.preventDefault();
     let response = e.target.dataset.response;
-    let isAnswer = response === "Correct!" || response === "Wrong!";
+    let btnText = e.target.textContent;
+    let isAnswer = response === btnText || (response != "start" && response != "submit" && response != "back" && response != "clear" && response != "");
+    let answeredRight = false;
+    if (isAnswer && response === btnText) {
+        answeredRight = true;
+    }
     if (response === "start") {
         startQuiz();
     }
-    if (response === "Wrong!") {
+    if (response != btnText && isAnswer) {
         seconds -= 15;
         renderTime();
     }
     if (isAnswer) {
-        transitionTimer(response);
+        transitionTimer(answeredRight);
         nextPage();
     }
     if (response === "submit") {
@@ -131,8 +144,12 @@ const nextPage = function () {
     renderTime();
 }
 
-const transitionTimer = function (response) {
-    responseDiv.textContent = response;
+const transitionTimer = function (answeredRight) {
+    if (answeredRight) {
+        responseDiv.textContent = "Correct!";
+    } else {
+        responseDiv.textContent = "Wrong!";
+    }
     alertDiv.removeAttribute("style");
     setTimeout(function () {
         responseDiv.textContent = "";
@@ -165,8 +182,8 @@ const submitScore = function () {
 }
 
 const render = function () {
-    mainText.textContent = page.mainText[pageNumber];
-    subText.textContent = page.subText[pageNumber];
+    mainText.textContent = page[pageNumber].mainText;
+    subText.textContent = page[pageNumber].subText;
     mainText.setAttribute("style", "font-size: 35px; font-weight: bold")
     btnForm.innerHTML = "";
     if (pageNumber === 0) {
@@ -177,12 +194,12 @@ const render = function () {
     if (pageNumber === 6) {
         renderResults();
     }
-    for (let i = 0; i < page.btnText[pageNumber].length; i++) {
+    for (let i = 0; i < page[pageNumber].btnText.length; i++) {
         let newBtn = document.createElement("button");
-        newBtn.textContent = page.btnText[pageNumber][i];
+        newBtn.textContent = page[pageNumber].btnText[i];
         newBtn.setAttribute("type", "button");
         newBtn.setAttribute("class", "btn btn-success my-1 py-1");
-        newBtn.setAttribute("data-response", page.btnResponse[pageNumber][i]);
+        newBtn.setAttribute("data-response", page[pageNumber].btnResponse);
         btnForm.append(newBtn);
         btnForm.append(document.createElement("br"));
     }
@@ -192,7 +209,7 @@ const renderResults = function () {
     clearInterval(timer);
     mainText.removeAttribute("class");
     subText.removeAttribute("class");
-    subText.textContent = page.subText[pageNumber] + seconds + ".";
+    subText.textContent = page[pageNumber].subText + seconds + ".";
     mainText.setAttribute("style", "font-size: 30px; font-weight: bold;");
 
     let newLabel = document.createElement("label");
@@ -204,7 +221,7 @@ const renderResults = function () {
     newInput.setAttribute("name", "initials");
     newInput.setAttribute("class", "mx-1")
 
-    newInput.addEventListener("keydown", function(e) {
+    newInput.addEventListener("keydown", function (e) {
         if (e.key === "Enter") {
             e.preventDefault();
         }
